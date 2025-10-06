@@ -1,0 +1,17 @@
+name = "reply-platform-dashboard"
+compatibility_date = "2023-12-18"
+
+# Cloudflare Pages configuration for static Next.js app
+pages_build_output_dir = "out"
+
+# Environment variables for production
+[env.production.vars]
+NEXT_PUBLIC_API_URL = "https://reply-platform-api.red-frog-895a.workers.dev"
+NEXT_PUBLIC_GOOGLE_CLIENT_ID = "764998904028-961vabephjihi48j199ss8fiqtcudng1.apps.googleusercontent.com"
+NEXT_PUBLIC_REDIRECT_URI = "https://reply-platform-dashboard.pages.dev/auth/callback"
+
+# Environment variables for preview/staging
+[env.preview.vars]
+NEXT_PUBLIC_API_URL = "https://reply-platform-api.red-frog-895a.workers.dev"
+NEXT_PUBLIC_GOOGLE_CLIENT_ID = "764998904028-961vabephjihi48j199ss8fiqtcudng1.apps.googleusercontent.com"
+NEXT_PUBLIC_REDIRECT_URI = "https://reply-platform-dashboard.pages.dev/auth/callback"
