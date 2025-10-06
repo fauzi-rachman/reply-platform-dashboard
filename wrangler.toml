@@ -4,6 +4,15 @@ compatibility_date = "2023-12-18"
 # Cloudflare Pages configuration for static Next.js app
 pages_build_output_dir = "out"
 
+# Build configuration
+[build]
+command = "npm run build"
+cwd = ""
+
+# Build environment variables (available during build time)
+[build.env]
+NODE_ENV = "production"
+
 # Environment variables for production
 [env.production.vars]
 NEXT_PUBLIC_API_URL = "https://reply-platform-api.red-frog-895a.workers.dev"

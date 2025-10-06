@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "Reply Platform Dashboard - A Next.js application for managing websites and replies",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
