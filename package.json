@@ -1,0 +1,40 @@
+{
+  "name": "reply-platform-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reply Platform Dashboard - A Next.js application for managing websites and replies",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "deploy": "next build && wrangler pages deploy out",
+    "pages:deploy": "wrangler pages deploy out",
+    "db:create": "echo 'Create D1 database in Cloudflare dashboard or via wrangler'",
+    "db:migrate": "echo 'Run database migrations via API'"
+  },
+  "dependencies": {
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.3",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/user-event": "^14.5.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "@types/jest": "^29.5.11",
+    "wrangler": "^4.42.0"
+  }
+}
