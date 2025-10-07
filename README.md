@@ -211,6 +211,8 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 
 We provide comprehensive documentation to help you understand, use, and contribute to this project:
 
+> 📑 **[Complete Documentation Index](DOCS_INDEX.md)** - Navigate all documentation by topic
+
 ### Core Documentation
 
 - **[Architecture Guide](ARCHITECTURE.md)** - System design, data flow, and technical decisions
