@@ -2,6 +2,24 @@
 
 A modern **Next.js dashboard** deployed to **Cloudflare Pages** with **Google OAuth** authentication and API integration.
 
+> 📚 **Complete Documentation**: We've created comprehensive documentation to help you get started, contribute, and deploy. See the [Documentation](#-documentation) section below.
+
+## 📋 Table of Contents
+
+- [Live Dashboard](#-live-dashboard)
+- [Features](#-features)
+- [Dashboard Features](#-dashboard-features)
+- [Quick Setup](#️-quick-setup)
+- [Development](#-development)
+- [Configuration](#-configuration)
+- [Deployment](#-simple-deployment)
+- [Project Structure](#-project-structure)
+- [Documentation](#-documentation)
+- [Related Projects](#️-related-projects)
+- [Security](#️-security)
+- [Contributing](#-contributing)
+- [License](#-license)
+
 ## 🚀 **Live Dashboard**
 
 **Production Dashboard**: `https://reply-platform-dashboard.pages.dev`
@@ -160,24 +178,60 @@ npm run deploy
 
 ## 🛡️ **Security**
 
+Security is important to us. If you discover a security vulnerability, please follow our [Security Policy](SECURITY.md).
+
+**Key Security Features:**
+
 - **OAuth 2.0** - Secure Google authentication flow
-- **JWT Tokens** - Stateless authentication
+- **JWT Tokens** - Stateless authentication with 24-hour expiration
 - **HTTPS Only** - All production traffic encrypted
 - **CORS Configured** - Proper cross-origin policies
+- **Input Validation** - All user inputs sanitized
+- **Dependency Scanning** - Automated vulnerability checks
+
+**Reporting**: Please email security concerns to security@reply.sh instead of opening public issues.
 
 ## 🤝 **Contributing**
 
+We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) to get started.
+
+**Quick Start for Contributors:**
+
 1. Fork the repository
-2. Create a feature branch
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Add tests if needed
-5. Submit a pull request
+4. Run tests and linting (`npm test && npm run lint`)
+5. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+6. Push to your branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 
 ## 📖 **Documentation**
 
-- **Authentication Flow**: Google OAuth → JWT → API calls
-- **Component Structure**: See inline JSDoc comments
-- **API Integration**: Check `src/lib/api.ts`
+We provide comprehensive documentation to help you understand, use, and contribute to this project:
+
+> 📑 **[Complete Documentation Index](DOCS_INDEX.md)** - Navigate all documentation by topic
+
+### Core Documentation
+
+- **[Architecture Guide](ARCHITECTURE.md)** - System design, data flow, and technical decisions
+- **[API Reference](API_REFERENCE.md)** - Complete API client documentation with examples
+- **[Deployment Guide](DEPLOYMENT.md)** - Step-by-step deployment to Cloudflare Pages
+- **[Troubleshooting](TROUBLESHOOTING.md)** - Common issues and solutions
+
+### Contributing & Community
+
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
+- **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines and standards
+- **[Security Policy](SECURITY.md)** - Reporting vulnerabilities and security best practices
+
+### Quick Links
+
+- **Authentication Flow**: Google OAuth → JWT → API calls (see [Architecture](ARCHITECTURE.md))
+- **Component Structure**: Detailed in [Architecture Guide](ARCHITECTURE.md)
+- **API Integration**: Full reference in [API Reference](API_REFERENCE.md)
+- **Common Issues**: Check [Troubleshooting Guide](TROUBLESHOOTING.md)
 
 ## 📄 **License**
 
