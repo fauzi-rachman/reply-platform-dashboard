@@ -9,6 +9,9 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [otp, setOtp] = useState('');
+  const [useOTP, setUseOTP] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,6 +36,46 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRequestOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      await api.requestOTP(email);
+      setOtpSent(true);
+      setError(null);
+    } catch (err: any) {
+      setError(err.message || 'Failed to send OTP');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      const response = await api.verifyOTP(email, otp);
+      auth.setToken(response.token);
+      router.push('/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'OTP verification failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleLoginMode = () => {
+    setUseOTP(!useOTP);
+    setOtpSent(false);
+    setOtp('');
+    setPassword('');
+    setError(null);
   };
 
   const handleGoogleLogin = () => {
@@ -62,8 +105,8 @@ export default function LoginPage() {
         </div>
         
         <div className="space-y-4">
-          {/* Email/Password Login Form */}
-          <form onSubmit={handleEmailLogin} className="space-y-4">
+          {/* Email/Password or OTP Login Form */}
+          <form onSubmit={useOTP ? (otpSent ? handleVerifyOTP : handleRequestOTP) : handleEmailLogin} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email
@@ -76,36 +119,104 @@ export default function LoginPage() {
                 placeholder="fauzi.rachman@gmail.com"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 required
-                disabled={loading}
+                disabled={loading || otpSent}
               />
             </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                required
-                disabled={loading}
-              />
-            </div>
+            
+            {!useOTP && (
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  required
+                  disabled={loading}
+                />
+              </div>
+            )}
+
+            {useOTP && otpSent && (
+              <div>
+                <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-1">
+                  OTP Code
+                </label>
+                <input
+                  id="otp"
+                  type="text"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  placeholder="Enter 6-digit code"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-center text-2xl tracking-widest"
+                  required
+                  disabled={loading}
+                  maxLength={6}
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  Check your email for the verification code
+                </p>
+              </div>
+            )}
+
+            {useOTP && otpSent && (
+              <div className="flex justify-between items-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOtpSent(false);
+                    setOtp('');
+                  }}
+                  className="text-sm text-primary-600 hover:text-primary-700"
+                  disabled={loading}
+                >
+                  ← Change email
+                </button>
+                <button
+                  type="button"
+                  onClick={handleRequestOTP}
+                  className="text-sm text-primary-600 hover:text-primary-700"
+                  disabled={loading}
+                >
+                  Resend code
+                </button>
+              </div>
+            )}
+
             {error && (
               <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
                 {error}
               </div>
             )}
+
+            {useOTP && otpSent && (
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+                OTP code has been sent to your email
+              </div>
+            )}
+
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || (useOTP && otpSent && otp.length !== 6)}
               className="w-full bg-primary-600 text-white rounded-lg px-6 py-3 font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Signing in...' : 'Sign in with Email'}
+              {loading ? (useOTP && !otpSent ? 'Sending OTP...' : useOTP ? 'Verifying...' : 'Signing in...') : (useOTP && !otpSent ? 'Send OTP Code' : useOTP ? 'Verify & Sign in' : 'Sign in with Email')}
             </button>
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={toggleLoginMode}
+                className="text-sm text-primary-600 hover:text-primary-700"
+                disabled={loading}
+              >
+                {useOTP ? 'Use password instead' : 'Use OTP instead (no password needed)'}
+              </button>
+            </div>
           </form>
 
           {/* Divider */}

@@ -216,6 +216,97 @@ try {
 
 ---
 
+### POST /auth/otp/request
+
+Request an OTP code to be sent to the user's email for passwordless login.
+
+**Endpoint:** `POST /auth/otp/request`
+
+**Authentication:** Not required
+
+**Request:**
+```typescript
+{
+  email: string;  // User's email address
+}
+```
+
+**Response:**
+```typescript
+{
+  message: string;  // Success message
+}
+```
+
+**Method:**
+```typescript
+async requestOTP(email: string): Promise<{ message: string }>
+```
+
+**Example:**
+```typescript
+try {
+  await api.requestOTP('user@example.com');
+  console.log('OTP sent to email');
+} catch (error) {
+  console.error('Failed to send OTP:', error.message);
+}
+```
+
+**Errors:**
+- `400 Bad Request`: Missing or invalid email
+- `429 Too Many Requests`: Too many OTP requests
+- `500 Internal Server Error`: Backend error
+
+---
+
+### POST /auth/otp/verify
+
+Verify OTP code and authenticate the user (passwordless login).
+
+**Endpoint:** `POST /auth/otp/verify`
+
+**Authentication:** Not required
+
+**Request:**
+```typescript
+{
+  email: string;  // User's email address
+  otp: string;    // 6-digit OTP code
+}
+```
+
+**Response:**
+```typescript
+{
+  token: string;  // JWT token
+  user: User;     // User object
+}
+```
+
+**Method:**
+```typescript
+async verifyOTP(email: string, otp: string): Promise<AuthResponse>
+```
+
+**Example:**
+```typescript
+try {
+  const response = await api.verifyOTP('user@example.com', '123456');
+  auth.setToken(response.token);
+  console.log('Logged in via OTP');
+} catch (error) {
+  console.error('OTP verification failed:', error.message);
+}
+```
+
+**Errors:**
+- `400 Bad Request`: Missing email or OTP
+- `401 Unauthorized`: Invalid or expired OTP
+- `500 Internal Server Error`: Backend error
+
+---
+
 ### GET /auth/me
 
 Get current authenticated user's information.
