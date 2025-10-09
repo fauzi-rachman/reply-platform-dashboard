@@ -97,7 +97,7 @@ export default function LoginPage() {
       <div className="card max-w-md w-full mx-4">
         <div className="text-center mb-8">
           <img 
-            src="/reply-sh-logo-wide.png" 
+            src="/reply-sh-logo-wide.svg" 
             alt="Reply.sh Logo" 
             className="h-16 mx-auto mb-2"
           />

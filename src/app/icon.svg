@@ -1,0 +1,7 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Chat bubble icon for favicon -->
+  <path d="M6 8C6 5.79086 7.79086 4 10 4H22C24.2091 4 26 5.79086 26 8V20C26 22.2091 24.2091 24 22 24H19L16 28L13 24H10C7.79086 24 6 22.2091 6 20V8Z" fill="#0ea5e9"/>
+  <circle cx="12" cy="14" r="1.5" fill="white"/>
+  <circle cx="16" cy="14" r="1.5" fill="white"/>
+  <circle cx="20" cy="14" r="1.5" fill="white"/>
+</svg>
