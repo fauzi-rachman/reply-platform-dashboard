@@ -125,6 +125,71 @@ export const api = {
   },
 
   /**
+   * Request OTP code to be sent to email
+   * 
+   * @param email - User's email address
+   * @returns Success message
+   * @throws Error if email is invalid or sending fails
+   * 
+   * @example
+   * ```typescript
+   * try {
+   *   await api.requestOTP('user@example.com');
+   *   console.log('OTP sent to email');
+   * } catch (error) {
+   *   console.error('Failed to send OTP:', error.message);
+   * }
+   * ```
+   */
+  async requestOTP(email: string): Promise<{ message: string }> {
+    const response = await fetch(`${API_URL}/auth/otp/request`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to send OTP');
+    }
+    
+    return response.json();
+  },
+
+  /**
+   * Verify OTP code and authenticate
+   * 
+   * @param email - User's email address
+   * @param otp - OTP code received via email
+   * @returns Authentication response with JWT token and user data
+   * @throws Error if OTP is invalid or expired
+   * 
+   * @example
+   * ```typescript
+   * try {
+   *   const response = await api.verifyOTP('user@example.com', '123456');
+   *   localStorage.setItem('token', response.token);
+   * } catch (error) {
+   *   console.error('OTP verification failed:', error.message);
+   * }
+   * ```
+   */
+  async verifyOTP(email: string, otp: string): Promise<AuthResponse> {
+    const response = await fetch(`${API_URL}/auth/otp/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, otp }),
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'OTP verification failed');
+    }
+    
+    return response.json();
+  },
+
+  /**
    * Get current authenticated user's information
    * 
    * @param token - JWT authentication token
