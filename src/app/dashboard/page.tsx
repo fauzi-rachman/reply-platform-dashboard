@@ -105,7 +105,7 @@ export default function DashboardPage() {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <img 
-                src="/reply-sh-logo-wide.png" 
+                src="/reply-sh-logo-wide.svg" 
                 alt="Reply.sh Logo" 
                 className="h-8"
               />
