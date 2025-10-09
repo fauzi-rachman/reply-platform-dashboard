@@ -217,6 +217,8 @@ const [error, setError] = useState<string | null>(null);
 **Key Methods:**
 - `auth()`: Google OAuth code exchange
 - `login()`: Email/password authentication
+- `requestOTP()`: Request OTP code via email
+- `verifyOTP()`: Verify OTP and authenticate
 - `getMe()`: Fetch current user data
 - `getWebsites()`: Fetch user's websites
 - `addWebsite()`: Add new website
@@ -243,6 +245,7 @@ export const auth = {
 
 ### Authentication Flow
 
+#### Google OAuth Flow
 ```
 1. User clicks "Sign in with Google"
    │
@@ -261,6 +264,44 @@ export const auth = {
    ├─→ Returns JWT token
    │
 5. Store token in localStorage
+   │
+   └─→ Redirect to /dashboard
+```
+
+#### Email/Password Flow
+```
+1. User enters email and password
+   │
+   ├─→ POST /auth/login { email, password }
+   │
+2. API validates credentials
+   │
+   ├─→ Returns JWT token
+   │
+3. Store token in localStorage
+   │
+   └─→ Redirect to /dashboard
+```
+
+#### Email OTP Flow (Passwordless)
+```
+1. User clicks "Use OTP instead"
+   │
+2. User enters email
+   │
+   ├─→ POST /auth/otp/request { email }
+   │
+3. API sends OTP code to email
+   │
+4. User enters 6-digit OTP code
+   │
+   ├─→ POST /auth/otp/verify { email, otp }
+   │
+5. API validates OTP
+   │
+   ├─→ Returns JWT token
+   │
+6. Store token in localStorage
    │
    └─→ Redirect to /dashboard
 ```
@@ -330,10 +371,18 @@ Delete Website:
 
 The application uses **JWT (JSON Web Tokens)** for stateless authentication:
 
-1. **Token Acquisition**: User authenticates via Google OAuth or email/password
+1. **Token Acquisition**: User authenticates via Google OAuth, email/password, or email OTP
 2. **Token Storage**: JWT stored in browser localStorage
 3. **Token Usage**: Included in `Authorization` header for API requests
 4. **Token Validation**: API validates token on each request
+
+### Authentication Methods
+
+The platform supports three authentication methods:
+
+1. **Google OAuth**: Industry-standard OAuth 2.0 flow
+2. **Email/Password**: Traditional credentials-based login
+3. **Email OTP**: Passwordless login with one-time codes sent via email
 
 ### Security Considerations
 
@@ -342,6 +391,8 @@ The application uses **JWT (JSON Web Tokens)** for stateless authentication:
 - **JWT Expiration**: Tokens have limited lifetime
 - **No Sensitive Data**: Tokens stored client-side only
 - **CORS**: Proper cross-origin policies configured
+- **OTP Expiration**: One-time codes expire after a short period
+- **Rate Limiting**: OTP requests are rate-limited to prevent abuse
 
 ## API Integration
 
@@ -360,6 +411,8 @@ The API client (`src/lib/api.ts`) provides:
 |--------|----------|-------------|---------------|
 | POST | `/auth/google` | Exchange OAuth code for JWT | No |
 | POST | `/auth/login` | Email/password login | No |
+| POST | `/auth/otp/request` | Request OTP code via email | No |
+| POST | `/auth/otp/verify` | Verify OTP and authenticate | No |
 | GET | `/auth/me` | Get current user info | Yes |
 | GET | `/websites` | List user's websites | Yes |
 | POST | `/websites` | Add new website | Yes |
